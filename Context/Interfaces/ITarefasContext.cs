@@ -12,6 +12,6 @@ namespace TrilhaApiDesafio.Context.Interfaces
         Task<IEnumerable<Tarefa>> GetAll();
         Task<IEnumerable<Tarefa>> GetByTittle(string tittle);
         Task<IEnumerable<Tarefa>> GetByDate(DateTime date);
-        Task<IEnumerable<Tarefa>> GetByStatus(string status);
+        Task<IEnumerable<Tarefa>> GetByStatus(int status);
     }
 }

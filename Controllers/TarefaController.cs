@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Extensions;
 using TrilhaApiDesafio.Context;
 using TrilhaApiDesafio.Context.Interfaces;
 using TrilhaApiDesafio.Models;
@@ -17,9 +18,9 @@ namespace TrilhaApiDesafio.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult ObterPorId(int id)
+        public async Task<IActionResult> ObterPorId(int id)
         {
-            var tarefa = _context.Get(id);
+            var tarefa = await _context.Get(id);
 
             if (tarefa == null)
             {
@@ -30,9 +31,9 @@ namespace TrilhaApiDesafio.Controllers
         }
 
         [HttpGet("ObterTodos")]
-        public IActionResult ObterTodos()
+        public async Task<IActionResult> ObterTodos()
         {
-            var tarefas = _context.GetAll();
+            var tarefas = await _context.GetAll();
             if (tarefas == null)
             {
                 return NoContent();
@@ -42,9 +43,9 @@ namespace TrilhaApiDesafio.Controllers
         }
 
         [HttpGet("ObterPorTitulo")]
-        public IActionResult ObterPorTitulo(string titulo)
+        public async Task<IActionResult> ObterPorTitulo(string titulo)
         {
-            var tarefas = _context.GetByTittle(titulo);
+            var tarefas = await _context.GetByTittle(titulo);
             if (tarefas == null)
             {
                 return NoContent();
@@ -54,9 +55,9 @@ namespace TrilhaApiDesafio.Controllers
         }
 
         [HttpGet("ObterPorData")]
-        public IActionResult ObterPorData(DateTime data)
+        public async Task<IActionResult> ObterPorData(DateTime data)
         {
-            var tarefa = _context.GetByDate(data);
+            var tarefa = await _context.GetByDate(data);
             if (tarefa == null)
             {
                 return NotFound();
@@ -66,11 +67,11 @@ namespace TrilhaApiDesafio.Controllers
         }
 
         [HttpGet("ObterPorStatus")]
-        public IActionResult ObterPorStatus(EnumStatusTarefa status)
+        public async Task<IActionResult> ObterPorStatus(EnumStatusTarefa status)
         {
             // TODO: Buscar  as tarefas no banco utilizando o EF, que contenha o status recebido por parâmetro
             // Dica: Usar como exemplo o endpoint ObterPorData
-            var tarefa = _context.GetByStatus(status.ToString());
+            var tarefa = await _context.GetByStatus(((int)status));
             if (tarefa == null)
             {
                 return NotFound();
@@ -80,7 +81,7 @@ namespace TrilhaApiDesafio.Controllers
         }
 
         [HttpPost]
-        public IActionResult Criar(Tarefa tarefa)
+        public async Task<IActionResult> Criar(Tarefa tarefa)
         {
             if (tarefa.Data == DateTime.MinValue)
                 return BadRequest(new { Erro = "A data da tarefa não pode ser vazia" });
@@ -88,7 +89,7 @@ namespace TrilhaApiDesafio.Controllers
             // TODO: Adicionar a tarefa recebida no EF e salvar as mudanças (save changes)
             try
             {
-                _context.Save(tarefa);
+                await _context.Save(tarefa);
             }
             catch (System.Exception)
             {
@@ -132,15 +133,15 @@ namespace TrilhaApiDesafio.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Deletar(int id)
+        public async Task<IActionResult> Deletar(int id)
         {
-            var tarefaBanco = _context.Get(id);
+            var tarefaBanco = await _context.Get(id);
 
             if (tarefaBanco == null)
                 return NotFound();
 
 
-            _context.Delete(tarefaBanco);
+            await _context.Delete(tarefaBanco);
             // TODO: Remover a tarefa encontrada através do EF e salvar as mudanças (save changes)
             return NoContent();
         }

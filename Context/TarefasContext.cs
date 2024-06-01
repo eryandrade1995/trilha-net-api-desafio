@@ -10,7 +10,7 @@ namespace TrilhaApiDesafio.Context
 {
     public class TarefasContext : BaseContext, ITarefasContext
     {
-        private readonly OrganizadorContext _context;
+        private new readonly OrganizadorContext _context;
         public TarefasContext(OrganizadorContext context) : base(context)
         {
             _context = context;
@@ -21,7 +21,7 @@ namespace TrilhaApiDesafio.Context
 
         public async Task<IEnumerable<Tarefa>> GetByDate(DateTime date) => await _context.Tarefas.Where(x => x.Data.Date == date.Date).ToListAsync();
 
-        public async Task<IEnumerable<Tarefa>> GetByStatus(string status) => await _context.Tarefas.Where(x => x.Status.ToString() == status).ToListAsync();
+        public async Task<IEnumerable<Tarefa>> GetByStatus(int status) => await _context.Tarefas.Where(x => ((int)x.Status) == status).ToListAsync();
 
         public async Task<IEnumerable<Tarefa>> GetByTittle(string tittle) => await _context.Tarefas.Where(x => x.Titulo == tittle).ToListAsync();
     }

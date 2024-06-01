@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.OpenApi.Extensions;
 
 namespace TrilhaApiDesafio.Models
 {
@@ -12,5 +13,6 @@ namespace TrilhaApiDesafio.Models
         public string Descricao { get; set; }
         public DateTime Data { get; set; }
         public EnumStatusTarefa Status { get; set; }
+
     }
 }
